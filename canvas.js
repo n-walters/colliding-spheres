@@ -50,9 +50,10 @@ window.addEventListener("resize", () => {
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*          Prototypes                                                       */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-function Sphere(radius, position) {
+function Sphere(radius, position, velocity) {
 	this.radius = radius;
 	this.position = position;
+	this.velocity = velocity;
 	
 	this.draw = (context) => {
 		context.beginPath();
@@ -67,6 +68,7 @@ function Sphere(radius, position) {
 	}
 	
 	this.update = (context) => {
-		
+		this.position.x += this.velocity.x;
+		this.position.y += this.velocity.y;
 	}
 }
