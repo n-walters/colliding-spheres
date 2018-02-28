@@ -11,9 +11,15 @@ window.addEventListener("load", () => {
 	animate(context);
 });
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*          Declarations                                                     */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 let context;
 let animation;
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*          Implement                                                        */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 function init(canvas) {
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
@@ -25,6 +31,9 @@ function animate(context) {
 	context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 }
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*          Event listeners                                                  */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 window.addEventListener("resize", () => {
 	console.log("%cWindow resized. Re-initialising.", "color: green");
 	context = init(context.canvas);
