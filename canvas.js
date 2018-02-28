@@ -29,15 +29,18 @@ function init(canvas) {
 	canvas.height = window.innerHeight;
 	
 	for (let i = 0; i < 10; i++) {
-		objects.push(factory_Sphere(20,
+		objects.push(factory_Sphere(
+			20,
 			{ x: { min: 0, max: canvas.width }, y: { min: 0, max: canvas.height } },
 			{ x: { min: -2, max: 2 }, y: { min: -2, max: 2 } }
 		));
 	}
+	
 	const context = canvas.getContext("2d");
 	context.lineWidth = 3;
 	context.font = "20px calibri";
 	context.textBaseline = "top";
+	
 	return context;
 }
 
@@ -48,8 +51,10 @@ function animate(context, objects) {
 	// Will display info text or fade out over time
 	if (state.infoText.opacity > 0) {
 		context.fillStyle = `rgba(0, 0, 0, ${state.infoText.opacity / 100})`;
-		context.fillText("\"W\" to show/hide info", 10, 100);
-		context.fillText(" Click to pause/resume", 10, 130);
+		context.fillText(" Click to pause/resume", 10, 100);
+		context.fillText("\"A\" to create a sphere", 10, 130);
+		context.fillText("\"D\" to destroy a sphere", 10, 160);
+		context.fillText("\"W\" to show/hide info", 10, 190);
 		if (state.infoText.show === false) {
 			state.infoText.opacity -= 5;
 		}
@@ -83,6 +88,18 @@ window.addEventListener("click", () => {
 
 window.addEventListener("keydown", e => {
 	switch (e.keyCode) {
+		case 65: // "A"
+			objects.push(factory_Sphere(
+				20,
+				{ x: { min: 0, max: context.canvas.width },
+				  y: { min: 0, max: context.canvas.height }
+				},
+				{ x: { min: -2, max: 2 }, y: { min: -2, max: 2 } }
+			));
+			break;
+		case 68: // "D"
+			objects.shift();
+			break;
 		case 87: // "W"
 			// Toggles info text on/off. Sets opacity to 100 when turned on.
 			state.infoText.show = !state.infoText.show;
