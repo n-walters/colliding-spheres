@@ -20,6 +20,7 @@ let context;
 let animation;
 const objects = [];
 const state = {};
+const colours = ["33,133,197", "126,206,253", "255,127,102"];
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*          Implement                                                        */
@@ -33,7 +34,7 @@ function init(canvas) {
 			20,
 			{ x: { min: 0, max: canvas.width }, y: { min: 0, max: canvas.height } },
 			{ x: { min: -2, max: 2 }, y: { min: -2, max: 2 } },
-			"0, 0, 0"
+			colours[Math.round(randomBetween(0, colours.length - 1))]
 		));
 	}
 	
@@ -96,7 +97,7 @@ window.addEventListener("keydown", e => {
 				  y: { min: 0, max: context.canvas.height }
 				},
 				{ x: { min: -2, max: 2 }, y: { min: -2, max: 2 } },
-				"0, 0, 0"
+				colours[Math.round(randomBetween(0, colours.length - 1))]
 			));
 			break;
 		case 68: // "D"
@@ -128,6 +129,7 @@ function Sphere(radius, position, velocity, colour) {
 			0, Math.PI * 2, false);
 		context.fillStyle = `rgb(${this.colour}, ${this.opacity})`;
 		context.fill();
+		context.strokeStyle = `rgb(${this.colour})`;
 		context.stroke();
 	}
 	
