@@ -32,7 +32,8 @@ function init(canvas) {
 		objects.push(factory_Sphere(
 			20,
 			{ x: { min: 0, max: canvas.width }, y: { min: 0, max: canvas.height } },
-			{ x: { min: -2, max: 2 }, y: { min: -2, max: 2 } }
+			{ x: { min: -2, max: 2 }, y: { min: -2, max: 2 } },
+			"0, 0, 0"
 		));
 	}
 	
@@ -94,7 +95,8 @@ window.addEventListener("keydown", e => {
 				{ x: { min: 0, max: context.canvas.width },
 				  y: { min: 0, max: context.canvas.height }
 				},
-				{ x: { min: -2, max: 2 }, y: { min: -2, max: 2 } }
+				{ x: { min: -2, max: 2 }, y: { min: -2, max: 2 } },
+				"0, 0, 0"
 			));
 			break;
 		case 68: // "D"
@@ -113,11 +115,11 @@ window.addEventListener("keydown", e => {
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*          Prototypes                                                       */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-function Sphere(radius, position, velocity) {
+function Sphere(radius, position, velocity, colour) {
 	this.radius = radius;
 	this.position = position;
 	this.velocity = velocity;
-	this.colour = "0, 0, 0";
+	this.colour = colour;
 	this.opacity = 0.2;
 	
 	this.draw = (context) => {
@@ -145,7 +147,7 @@ function Sphere(radius, position, velocity) {
 	}
 }
 
-function factory_Sphere(r, posRange, velRange) {
+function factory_Sphere(r, posRange, velRange, c) {
 	// Chooses a random value between min and max for both x and y, then rounds
 	// to an integer.
 	const p = {
@@ -158,7 +160,7 @@ function factory_Sphere(r, posRange, velRange) {
 		x: Math.round(100 * randomBetween(velRange.x.min, velRange.x.max)) / 100,
 		y: Math.round(100 * randomBetween(velRange.y.min, velRange.y.max)) / 100
 	};
-	return new Sphere(r, p, v);
+	return new Sphere(r, p, v, c);
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
