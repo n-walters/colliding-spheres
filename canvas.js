@@ -7,6 +7,7 @@ window.addEventListener("load", () => {
 	// Variable to hold information about the state of various parts of the app.
 	states.infoText = { show: true, opacity: 100 };
 	states.colours = { background: 255, text: 0 };
+	states.velocity = { multiplier: 1, opacity: 0 };
 	
 	const canvas = document.getElementById("canvas");
 	context = init(canvas);
@@ -68,18 +69,26 @@ function animate(context, objects, mouse, states) {
 	if (states.infoText.opacity > 0) {
 		context.fillStyle = rgbString(states.colours.text, states.infoText.opacity / 100);
 		context.fillText(" Click to pause/resume", 10, 100);
-		context.fillText("\"A\" to create a sphere", 10, 130);
-		context.fillText("\"D\" to destroy a sphere", 10, 160);
-		context.fillText("\"W\" to show/hide info", 10, 190);
-		context.fillText("\"B\" to cycle background colour", 10, 220);
+		context.fillText(" Scroll to change speed", 10, 130);
+		context.fillText("\"A\" to create a sphere", 10, 160);
+		context.fillText("\"D\" to destroy a sphere", 10, 190);
+		context.fillText("\"W\" to show/hide info", 10, 220);
+		context.fillText("\"B\" to cycle background colour", 10, 250);
 		if (states.infoText.show === false) {
 			states.infoText.opacity -= 5;
 		}
 	}
 	
+	// Velocity multiplier text will be displayed and then faded out.
+	if (states.velocity.opacity > 0) {
+		context.fillStyle = rgbString(states.colours.text, states.velocity.opacity / 100);
+		context.fillText(`Velocity multiplier: ${states.velocity.multiplier}`, 15, 10);
+		states.velocity.opacity -= 3;
+	}
+	
 	// Updates and then draws each object.
 	objects.forEach(object => {
-		object.update(context, mouse);
+		object.update(context, mouse, states.velocity.multiplier);
 		object.draw(context);
 	});
 }
@@ -152,6 +161,21 @@ window.addEventListener("mousemove", e => {
 	mouse.y = e.clientY;
 });
 
+// Scrolling up or down will increase/decrease the multiplier applied to
+// a Sphere's velocity. Also sets the opacity of the relevant HUD text.
+window.addEventListener("wheel", e => {
+	if (e.deltaY < 0) {
+		states.velocity.multiplier += 0.05;
+		states.velocity.opacity = 100;
+	} else {
+		states.velocity.multiplier -= 0.05;
+		states.velocity.opacity = 100;
+	}
+	// Workaround to an issue where JavaScript incorrectly handles floats.
+	states.velocity.multiplier =
+		Math.round(states.velocity.multiplier * 100) / 100;
+});
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*          Prototypes                                                       */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -175,9 +199,9 @@ function Sphere(radius, position, velocity, colour) {
 	}
 	
 	// Updates Sphere properties.
-	this.update = (context, mouse) => {
-		this.position.x += this.velocity.x;
-		this.position.y += this.velocity.y;
+	this.update = (context, mouse, velocityMultiplier) => {
+		this.position.x += this.velocity.x * velocityMultiplier;
+		this.position.y += this.velocity.y * velocityMultiplier;
 		
 		// Canvas edge collision.
 		// Is moving out of either left/right. Horizontal velocity reversed.
