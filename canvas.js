@@ -94,8 +94,8 @@ function factory_Sphere(r, posRange, velRange) {
 	// Chooses a random value between min and max for both x and y, then rounds
 	// to an integer.
 	const p = {
-		x: Math.round(randomBetween(posRange.x.min, posRange.x.max)),
-		y: Math.round(randomBetween(posRange.y.min, posRange.y.max))
+		x: Math.round(randomBetween(posRange.x.min + r, posRange.x.max - r)),
+		y: Math.round(randomBetween(posRange.y.min + r, posRange.y.max - r))
 	};
 	// Chooses a random value between min and max for both x and y, then rounds
 	// to 2 decimal places.
