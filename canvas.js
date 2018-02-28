@@ -206,3 +206,9 @@ function rgbString(colour, opacity) {
 		return `rgb(${colour}, ${colour}, ${colour})`;
 	}
 }
+
+// Distance between two points using the Pythagorean equation
+function distanceBetween(x1, y1, x2, y2) {
+	const delta = { x: x2 - x1, y: y2 - y1 };
+	return Math.sqrt(Math.pow(delta.x, 2) + Math.pow(delta.y, 2));
+}
