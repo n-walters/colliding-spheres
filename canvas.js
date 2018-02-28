@@ -9,7 +9,7 @@ window.addEventListener("load", () => {
 	
 	const canvas = document.getElementById("canvas");
 	context = init(canvas);
-	animate(context, objects);
+	animate(context, objects, states);
 });
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -50,8 +50,8 @@ function init(canvas) {
 	return context;
 }
 
-function animate(context, objects) {
-	animation = window.requestAnimationFrame(() => animate(context, objects));
+function animate(context, objects, states) {
+	animation = window.requestAnimationFrame(() => animate(context, objects, states));
 	context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 	
 	// Will display info text or fade out over time
