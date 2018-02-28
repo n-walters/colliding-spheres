@@ -38,3 +38,27 @@ window.addEventListener("resize", () => {
 	console.log("%cWindow resized. Re-initialising.", "color: green");
 	context = init(context.canvas);
 });
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*          Prototypes                                                       */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+function Sphere(radius, position) {
+	this.radius = radius;
+	this.position = position;
+	
+	this.draw = (context) => {
+		context.beginPath();
+		context.arc(
+			this.position.x,
+			this.position.y,
+			this.radius,
+			0,
+			Math.PI * 2,
+			false);
+		context.stroke();
+	}
+	
+	this.update = (context) => {
+		
+	}
+}
