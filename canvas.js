@@ -69,13 +69,19 @@ function animate(context, objects, mouse, states) {
 	// Info text will either be displayed or faded out.
 	if (states.infoText.opacity > 0) {
 		context.fillStyle = rgbString(states.colours.text, states.infoText.opacity / 100);
-		context.fillText(" Click to pause/resume", 10, 100);
-		context.fillText(" Scroll to change speed", 10, 130);
-		context.fillText("\"A\" to create a sphere", 10, 160);
-		context.fillText("\"D\" to destroy a sphere", 10, 190);
-		context.fillText("\"R\" to toggle mouse repulsion", 10, 220)
-		context.fillText("\"W\" to show/hide info", 10, 250);
-		context.fillText("\"B\" to cycle background colour", 10, 280);
+		const text = [
+			" Click to pause/resume",
+			" Scroll to change sphere speed",
+			" Shift+Scroll to change mouse repulsion",
+			"\"A\" to create a sphere",
+			"\"D\" to destroy a sphere",
+			"\"R\" to toggle mouse repulsion",
+			"\"W\" to show/hide info",
+			"\"B\" to cycle background colour"
+		];
+		for (let i = 0; i < text.length; i++) {
+			context.fillText(text[i], 10, i * 30 + 100);
+		}
 		if (states.infoText.show === false) {
 			states.infoText.opacity -= 5;
 		}
