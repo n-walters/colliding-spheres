@@ -8,6 +8,7 @@ window.addEventListener("load", () => {
 	states.infoText = { show: true, opacity: 100 };
 	states.colours = { background: 255, text: 0 };
 	states.velocity = { multiplier: 1, opacity: 0 };
+	states.repulsion = true;
 	
 	const canvas = document.getElementById("canvas");
 	context = init(canvas);
@@ -88,7 +89,7 @@ function animate(context, objects, mouse, states) {
 	
 	// Updates and then draws each object.
 	objects.forEach(object => {
-		object.update(context, mouse, states.velocity.multiplier);
+		object.update(context, mouse, states);
 		object.draw(context);
 	});
 }
@@ -199,9 +200,9 @@ function Sphere(radius, position, velocity, colour) {
 	}
 	
 	// Updates Sphere properties.
-	this.update = (context, mouse, velocityMultiplier) => {
-		this.position.x += this.velocity.x * velocityMultiplier;
-		this.position.y += this.velocity.y * velocityMultiplier;
+	this.update = (context, mouse, states) => {
+		this.position.x += this.velocity.x * states.velocity.multiplier;
+		this.position.y += this.velocity.y * states.velocity.multiplier;
 		
 		// Canvas edge collision.
 		// Is moving out of either left/right. Horizontal velocity reversed.
@@ -216,11 +217,18 @@ function Sphere(radius, position, velocity, colour) {
 		}
 		
 		// Mouse interaction
-		const distance = distanceBetween(
-			this.position.x, this.position.y, mouse.x, mouse.y);
-		// If close, increases opacity by 0.02, up to 1
-		// Otherwise decreases by 0.02 to a minimum of 0.2
+		const distance =
+			distanceBetween(this.position.x, this.position.y, mouse.x, mouse.y);
 		if (distance < mouse.distance) {
+			// Velocity is increased in the direction opposite to the mouse's
+			// position with a magnitude proportional to the distance between
+			// the two.
+			if (states.repulsion) {
+				this.velocity.x += 0.025 * (this.position.x - mouse.x) / distance;
+				this.velocity.y += 0.025 * (this.position.y - mouse.y) / distance;
+			}
+			// If close, increases opacity by 0.02, up to 1
+			// Otherwise decreases by 0.02 to a minimum of 0.2
 			this.opacity = Math.min(this.opacity + 0.02, 1);
 		} else {
 			this.opacity = Math.max(this.opacity - 0.02, 0.2);
