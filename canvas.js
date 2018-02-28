@@ -66,6 +66,7 @@ function animate(context, objects) {
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 window.addEventListener("resize", () => {
 	console.log("%cWindow resized. Re-initialising.", "color: green");
+	objects.length = 0;
 	context = init(context.canvas);
 });
 
