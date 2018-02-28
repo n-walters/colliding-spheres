@@ -9,6 +9,7 @@ window.addEventListener("load", () => {
 	state.infoText = { show: true, opacity: 100 };
 	
 	context = init(canvas);
+	context.lineWidth = 3;
 	context.font = "20px calibri";
 	context.textBaseline = "top";
 	
