@@ -24,3 +24,8 @@ function animate(context) {
 	animation = window.requestAnimationFrame(() => animate(context));
 	context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 }
+
+window.addEventListener("resize", () => {
+	console.log("%cWindow resized. Re-initialising.", "color: green");
+	context = init(context.canvas);
+});
