@@ -2,7 +2,7 @@
 
 // Script is loaded in HTML HEAD, therefore before DOM elements.
 window.addEventListener("load", () => {
-	console.log("%cDOM loaded.", "color: green");
+	console.log("DOM loaded.");
 	
 	states.infoText = { show: true, opacity: 100 };
 	states.colours = { background: 255, text: 0 };
@@ -78,17 +78,17 @@ function animate(context, objects) {
 /*          Event listeners                                                  */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 window.addEventListener("resize", () => {
-	console.log("%cWindow resized. Re-initialising.", "color: green");
+	console.log("Window resized. Re-initialising.");
 	objects.length = 0;
 	context = init(context.canvas);
 });
 
 window.addEventListener("click", () => {
 	if (animation === undefined) {
-		console.log("%cResuming animation.", "color: green");
+		console.log("Resuming animation.");
 		animate(context, objects);
 	} else {
-		console.log("%cPausing animation.", "color: green");
+		console.log("Pausing animation.");
 		window.cancelAnimationFrame(animation);
 		animation = undefined;
 	}
