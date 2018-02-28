@@ -117,16 +117,15 @@ function Sphere(radius, position, velocity) {
 	this.radius = radius;
 	this.position = position;
 	this.velocity = velocity;
+	this.colour = "0, 0, 0";
+	this.opacity = 0.2;
 	
 	this.draw = (context) => {
 		context.beginPath();
-		context.arc(
-			this.position.x,
-			this.position.y,
-			this.radius,
-			0,
-			Math.PI * 2,
-			false);
+		context.arc(this.position.x, this.position.y, this.radius,
+			0, Math.PI * 2, false);
+		context.fillStyle = `rgb(${this.colour}, ${this.opacity})`;
+		context.fill();
 		context.stroke();
 	}
 	
