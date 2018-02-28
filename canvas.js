@@ -4,6 +4,7 @@
 window.addEventListener("load", () => {
 	console.log("DOM loaded.");
 	
+	// Variable to hold information about the state of various parts of the app.
 	states.infoText = { show: true, opacity: 100 };
 	states.colours = { background: 255, text: 0 };
 	
@@ -26,6 +27,7 @@ const colours = ["33,133,197", "126,206,253", "255,127,102"];
 /*          Implement                                                        */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 function init(canvas) {
+	// Adjusts canvas to fill entire window.
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
 	
@@ -39,6 +41,7 @@ function init(canvas) {
 	mouse.distance = Math.round(Math.min(canvas.width, canvas.height) / 12 + 75);
 	console.log(`Mouse influence radius of ${mouse.distance}.`);
 	
+	// Generate Spheres and populate the 'objects' list.
 	for (let i = 0; i < amount; i++) {
 		objects.push(factory_Sphere(
 			20,
@@ -48,6 +51,7 @@ function init(canvas) {
 		));
 	}
 	
+	// Sets a few initial style settings.
 	const context = canvas.getContext("2d");
 	context.lineWidth = 2;
 	context.font = "20px calibri";
@@ -60,7 +64,7 @@ function animate(context, objects, mouse, states) {
 	animation = window.requestAnimationFrame(() => animate(context, objects, mouse, states));
 	context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 	
-	// Will display info text or fade out over time
+	// Info text will either be displayed or faded out.
 	if (states.infoText.opacity > 0) {
 		context.fillStyle = rgbString(states.colours.text, states.infoText.opacity / 100);
 		context.fillText(" Click to pause/resume", 10, 100);
@@ -73,6 +77,7 @@ function animate(context, objects, mouse, states) {
 		}
 	}
 	
+	// Updates and then draws each object.
 	objects.forEach(object => {
 		object.update(context, mouse);
 		object.draw(context);
@@ -89,6 +94,7 @@ window.addEventListener("resize", () => {
 });
 
 window.addEventListener("click", () => {
+	// Pauses or resumes the animation.
 	if (animation === undefined) {
 		console.log("Resuming animation.");
 		animate(context, objects, mouse, states);
@@ -102,6 +108,7 @@ window.addEventListener("click", () => {
 window.addEventListener("keydown", e => {
 	switch (e.keyCode) {
 		case 65: // "A"
+			// Generates and adds a new Sphere.
 			objects.push(factory_Sphere(
 				20,
 				{ x: { min: 0, max: context.canvas.width },
@@ -112,10 +119,11 @@ window.addEventListener("keydown", e => {
 			));
 			break;
 		case 68: // "D"
+			// Removes the first Sphere.
 			objects.shift();
 			break;
 		case 87: // "W"
-			// Toggles info text on/off. Sets opacity to 100 when turned on.
+			// Toggles info text on/off. Sets opacity to 100% when turned on.
 			states.infoText.show = !states.infoText.show;
 			if (states.infoText.show) {
 				states.infoText.opacity = 100;
@@ -154,6 +162,8 @@ function Sphere(radius, position, velocity, colour) {
 	this.colour = colour;
 	this.opacity = 0.2;
 	
+	// Draws the Sphere to the canvas.
+	// The outline is solid, the center filled with the sphere's opacity.
 	this.draw = (context) => {
 		context.beginPath();
 		context.arc(this.position.x, this.position.y, this.radius,
@@ -164,15 +174,18 @@ function Sphere(radius, position, velocity, colour) {
 		context.stroke();
 	}
 	
+	// Updates Sphere properties.
 	this.update = (context, mouse) => {
 		this.position.x += this.velocity.x;
 		this.position.y += this.velocity.y;
 		
 		// Canvas edge collision.
+		// Is moving out of either left/right. Horizontal velocity reversed.
 		if (this.position.x - this.radius <= 0 ||
 			this.position.x + this.radius >= context.canvas.width) {
 				this.velocity.x *= -1;
 		}
+		// Is moving out of either top/bottom. Vertical velocity reversed.
 		if (this.position.y - this.radius <= 0 ||
 			this.position.y + this.radius >= context.canvas.height) {
 				this.velocity.y *= -1;
@@ -181,6 +194,8 @@ function Sphere(radius, position, velocity, colour) {
 		// Mouse interaction
 		const distance = distanceBetween(
 			this.position.x, this.position.y, mouse.x, mouse.y);
+		// If close, increases opacity by 0.02, up to 1
+		// Otherwise decreases by 0.02 to a minimum of 0.2
 		if (distance < mouse.distance) {
 			this.opacity = Math.min(this.opacity + 0.02, 1);
 		} else {
@@ -212,6 +227,7 @@ function randomBetween(min, max) {
 	return Math.random() * (max - min) + min;
 }
 
+// Returns a CSS rgb or rgba colour string consisting of the one colour given.
 function rgbString(colour, opacity) {
 	if (opacity) {
 		return `rgba(${colour}, ${colour}, ${colour}, ${opacity})`;
@@ -220,7 +236,7 @@ function rgbString(colour, opacity) {
 	}
 }
 
-// Distance between two points using the Pythagorean equation
+// Calculates distance between two points using the Pythagorean equation.
 function distanceBetween(x1, y1, x2, y2) {
 	const delta = { x: x2 - x1, y: y2 - y1 };
 	return Math.sqrt(Math.pow(delta.x, 2) + Math.pow(delta.y, 2));
