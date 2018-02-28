@@ -51,6 +51,17 @@ window.addEventListener("resize", () => {
 	context = init(context.canvas);
 });
 
+window.addEventListener("click", () => {
+	if (animation === undefined) {
+		console.log("%cResuming animation.", "color: green");
+		animate(context, objects);
+	} else {
+		console.log("%cPausing animation.", "color: green");
+		window.cancelAnimationFrame(animation);
+		animation = undefined;
+	}
+});
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*          Prototypes                                                       */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
