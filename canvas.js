@@ -87,6 +87,16 @@ function Sphere(radius, position, velocity) {
 	this.update = (context) => {
 		this.position.x += this.velocity.x;
 		this.position.y += this.velocity.y;
+		
+		// Canvas edge collision.
+		if (this.position.x - this.radius <= 0 ||
+			this.position.x + this.radius >= context.canvas.width) {
+				this.velocity.x *= -1;
+		}
+		if (this.position.y - this.radius <= 0 ||
+			this.position.y + this.radius >= context.canvas.height) {
+				this.velocity.y *= -1;
+		}
 	}
 }
 
