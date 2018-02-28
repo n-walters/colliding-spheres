@@ -8,7 +8,7 @@ window.addEventListener("load", () => {
 	states.infoText = { show: true, opacity: 100 };
 	states.colours = { background: 255, text: 0 };
 	states.velocity = { multiplier: 1, opacity: 0 };
-	states.repulsion = true;
+	states.repulsion = { enabled: true, magnitude: 0.025, opacity: 0 };
 	
 	const canvas = document.getElementById("canvas");
 	context = init(canvas);
@@ -86,6 +86,13 @@ function animate(context, objects, mouse, states) {
 		context.fillStyle = rgbString(states.colours.text, states.velocity.opacity / 100);
 		context.fillText(`Velocity multiplier: ${states.velocity.multiplier}`, 15, 10);
 		states.velocity.opacity -= 3;
+	}
+	
+	// Repulsion magnitude text will be displayed and then faded out.
+	if (states.repulsion.opacity > 0) {
+		context.fillStyle = rgbString(states.colours.text, states.repulsion.opacity / 100);
+		context.fillText(`Repulsion magnitude: ${states.repulsion.magnitude}`, 15, 25);
+		states.repulsion.opacity -= 3;
 	}
 	
 	// Updates and then draws each object.
@@ -167,19 +174,34 @@ window.addEventListener("mousemove", e => {
 	mouse.y = e.clientY;
 });
 
-// Scrolling up or down will increase/decrease the multiplier applied to
-// a Sphere's velocity. Also sets the opacity of the relevant HUD text.
 window.addEventListener("wheel", e => {
-	if (e.deltaY < 0) {
-		states.velocity.multiplier += 0.05;
-		states.velocity.opacity = 100;
+	if (e.shiftKey) {
+		// Scrolling will increase/decrease the effect of the mouse's sphere
+		// repulsion. Also sets the opacity of the relevant HUD text.
+		if (e.deltaY < 0) {
+			states.repulsion.magnitude += 0.001;
+			states.repulsion.opacity = 100;
+		} else {
+			states.repulsion.magnitude -= 0.001;
+			states.repulsion.opacity = 100;
+		}
+		// Workaround to an issue where JavaScript incorrectly handles floats.
+		states.repulsion.magnitude =
+			Math.round(states.repulsion.magnitude * 10000) / 10000;
 	} else {
-		states.velocity.multiplier -= 0.05;
-		states.velocity.opacity = 100;
+		// Scrolling up or down will increase/decrease the multiplier applied to
+		// a Sphere's velocity. Also sets the opacity of the relevant HUD text.
+		if (e.deltaY < 0) {
+			states.velocity.multiplier += 0.05;
+			states.velocity.opacity = 100;
+		} else {
+			states.velocity.multiplier -= 0.05;
+			states.velocity.opacity = 100;
+		}
+		// Workaround to an issue where JavaScript incorrectly handles floats.
+		states.velocity.multiplier =
+			Math.round(states.velocity.multiplier * 100) / 100;
 	}
-	// Workaround to an issue where JavaScript incorrectly handles floats.
-	states.velocity.multiplier =
-		Math.round(states.velocity.multiplier * 100) / 100;
 });
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -228,9 +250,13 @@ function Sphere(radius, position, velocity, colour) {
 			// Velocity is increased in the direction opposite to the mouse's
 			// position with a magnitude proportional to the distance between
 			// the two.
-			if (states.repulsion) {
-				this.velocity.x += 0.025 * (this.position.x - mouse.x) / distance;
-				this.velocity.y += 0.025 * (this.position.y - mouse.y) / distance;
+			if (states.repulsion.enabled) {
+				this.velocity.x +=
+					states.repulsion.magnitude *
+					(this.position.x - mouse.x) / distance;
+				this.velocity.y +=
+					states.repulsion.magnitude *
+					(this.position.y - mouse.y) / distance;
 			}
 			// If close, increases opacity by 0.02, up to 1
 			// Otherwise decreases by 0.02 to a minimum of 0.2
