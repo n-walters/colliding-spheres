@@ -4,13 +4,11 @@
 window.addEventListener("load", () => {
 	console.log("%cDOM loaded.", "color: green");
 	
-	const canvas = document.getElementById("canvas");
-	
 	state.infoText = { show: true, opacity: 100 };
 	state.colours = { background: 255, text: 0 };
 	
+	const canvas = document.getElementById("canvas");
 	context = init(canvas);
-	
 	animate(context, objects);
 });
 
