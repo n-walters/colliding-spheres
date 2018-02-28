@@ -62,7 +62,6 @@ function animate(context, objects, mouse, states) {
 	
 	// Will display info text or fade out over time
 	if (states.infoText.opacity > 0) {
-		
 		context.fillStyle = rgbString(states.colours.text, states.infoText.opacity / 100);
 		context.fillText(" Click to pause/resume", 10, 100);
 		context.fillText("\"A\" to create a sphere", 10, 130);
