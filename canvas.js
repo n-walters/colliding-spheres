@@ -22,10 +22,11 @@ const objects = [];
 /*          Implement                                                        */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 function init(canvas) {
-	objects.push();
-	
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
+	
+	objects.push();
+	
 	return canvas.getContext("2d");
 }
 
@@ -71,4 +72,28 @@ function Sphere(radius, position, velocity) {
 		this.position.x += this.velocity.x;
 		this.position.y += this.velocity.y;
 	}
+}
+
+function factory_Sphere(r, posRange, velRange) {
+	// Chooses a random value between min and max for both x and y, then rounds
+	// to an integer.
+	const p = {
+		x: Math.round(
+			Math.random() * (posRange.x.max - posRange.x.min) + posRange.x.min
+		),
+		y: Math.round(
+			Math.random() * (posRange.y.max - posRange.y.min) + posRange.y.min
+		)
+	};
+	// Chooses a random value between min and max for both x and y, then rounds
+	// to 2 decimal places.
+	const v = {
+		x: Math.round(100 *
+			(Math.random() * (velRange.x.max - velRange.x.min) + velRange.x.min)
+		) / 100,
+		y: Math.round(100 *
+			(Math.random() * (velRange.y.max - velRange.y.min) + velRange.y.min)
+		) / 100
+	};
+	return new Sphere(r, p, v);
 }
