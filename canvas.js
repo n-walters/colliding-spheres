@@ -8,7 +8,7 @@ window.addEventListener("load", () => {
 	
 	context = init(canvas);
 	
-	animate(context);
+	animate(context, objects);
 });
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -16,19 +16,27 @@ window.addEventListener("load", () => {
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 let context;
 let animation;
+const objects = [];
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*          Implement                                                        */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 function init(canvas) {
+	objects.push();
+	
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
 	return canvas.getContext("2d");
 }
 
-function animate(context) {
-	animation = window.requestAnimationFrame(() => animate(context));
+function animate(context, objects) {
+	animation = window.requestAnimationFrame(() => animate(context, objects));
 	context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+	
+	objects.forEach(object => {
+		object.update(context);
+		object.draw(context);
+	});
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
