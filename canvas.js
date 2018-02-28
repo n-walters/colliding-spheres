@@ -6,7 +6,11 @@ window.addEventListener("load", () => {
 	
 	const canvas = document.getElementById("canvas");
 	
+	state.infoText = { show: true, opacity: 100 };
+	
 	context = init(canvas);
+	context.font = "20px calibri";
+	context.textBaseline = "top";
 	
 	animate(context, objects);
 });
@@ -17,6 +21,7 @@ window.addEventListener("load", () => {
 let context;
 let animation;
 const objects = [];
+const state = {};
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*          Implement                                                        */
@@ -38,6 +43,16 @@ function init(canvas) {
 function animate(context, objects) {
 	animation = window.requestAnimationFrame(() => animate(context, objects));
 	context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+	
+	// Will display info text or fade out over time
+	if (state.infoText.opacity > 0) {
+		context.fillStyle = `rgba(0, 0, 0, ${state.infoText.opacity / 100})`;
+		context.fillText("\"W\" to show/hide info", 10, 100);
+		context.fillText(" Click to pause/resume", 10, 130);
+		if (state.infoText.show === false) {
+			state.infoText.opacity -= 5;
+		}
+	}
 	
 	objects.forEach(object => {
 		object.update(context);
@@ -61,6 +76,18 @@ window.addEventListener("click", () => {
 		console.log("%cPausing animation.", "color: green");
 		window.cancelAnimationFrame(animation);
 		animation = undefined;
+	}
+});
+
+window.addEventListener("keydown", e => {
+	switch (e.keyCode) {
+		case 87: // "W"
+			// Toggles info text on/off. Sets opacity to 100 when turned on.
+			state.infoText.show = !state.infoText.show;
+			if (state.infoText.show) {
+				state.infoText.opacity = 100;
+			}
+			break;
 	}
 });
 
