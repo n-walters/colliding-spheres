@@ -34,6 +34,11 @@ function init(canvas) {
 	const amount = 5 * Math.round((canvas.width * canvas.height) / 37500);
 	console.log(`Creating ${amount} spheres.`);
 	
+	// Calculates a reasonable radius for the mouse to affect spheres.
+	// Minimum of 75, increasing linearly by 1 for every 12 of window size.
+	mouse.distance = Math.round(Math.min(canvas.width, canvas.height) / 12 + 75);
+	console.log(`Mouse influence radius of ${mouse.distance}.`);
+	
 	for (let i = 0; i < amount; i++) {
 		objects.push(factory_Sphere(
 			20,
@@ -177,7 +182,7 @@ function Sphere(radius, position, velocity, colour) {
 		// Mouse interaction
 		const distance = distanceBetween(
 			this.position.x, this.position.y, mouse.x, mouse.y);
-		if (distance < 200) {
+		if (distance < mouse.distance) {
 			this.opacity = Math.min(this.opacity + 0.02, 1);
 		} else {
 			this.opacity = Math.max(this.opacity - 0.02, 0.2);
