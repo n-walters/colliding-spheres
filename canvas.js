@@ -25,10 +25,12 @@ function init(canvas) {
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
 	
-	objects.push(factory_Sphere(20,
-		{ x: { min: 0, max: canvas.width }, y: { min: 0, max: canvas.height } },
-		{ x: { min: -2, max: 2 }, y: { min: -2, max: 2 } }
-	));
+	for (let i = 0; i < 10; i++) {
+		objects.push(factory_Sphere(20,
+			{ x: { min: 0, max: canvas.width }, y: { min: 0, max: canvas.height } },
+			{ x: { min: -2, max: 2 }, y: { min: -2, max: 2 } }
+		));
+	}
 	
 	return canvas.getContext("2d");
 }
