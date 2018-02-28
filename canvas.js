@@ -17,6 +17,7 @@ window.addEventListener("load", () => {
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 let context;
 let animation;
+const mouse = {};
 const objects = [];
 const states = {};
 const colours = ["33,133,197", "126,206,253", "255,127,102"];
@@ -132,6 +133,11 @@ window.addEventListener("keydown", e => {
 			);
 			break;
 	}
+});
+
+window.addEventListener("mousemove", e => {
+	mouse.x = e.clientX;
+	mouse.y = e.clientY;
 });
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
