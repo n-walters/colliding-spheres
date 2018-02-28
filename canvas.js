@@ -73,8 +73,9 @@ function animate(context, objects, mouse, states) {
 		context.fillText(" Scroll to change speed", 10, 130);
 		context.fillText("\"A\" to create a sphere", 10, 160);
 		context.fillText("\"D\" to destroy a sphere", 10, 190);
-		context.fillText("\"W\" to show/hide info", 10, 220);
-		context.fillText("\"B\" to cycle background colour", 10, 250);
+		context.fillText("\"R\" to toggle mouse repulsion", 10, 220)
+		context.fillText("\"W\" to show/hide info", 10, 250);
+		context.fillText("\"B\" to cycle background colour", 10, 280);
 		if (states.infoText.show === false) {
 			states.infoText.opacity -= 5;
 		}
@@ -138,6 +139,10 @@ window.addEventListener("keydown", e => {
 			if (states.infoText.show) {
 				states.infoText.opacity = 100;
 			}
+			break;
+		case 82: // "R"
+			// Toggles the mouse repelling spheres.
+			states.repulsion = !states.repulsion;
 			break;
 		case 66: // "B"
 			// Reduces background colour by 15, after 0 it will loop back to 255
