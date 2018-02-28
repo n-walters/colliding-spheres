@@ -7,6 +7,7 @@ window.addEventListener("load", () => {
 	const canvas = document.getElementById("canvas");
 	
 	state.infoText = { show: true, opacity: 100 };
+	state.colours = { background: 255, text: 0 };
 	
 	context = init(canvas);
 	
@@ -52,11 +53,13 @@ function animate(context, objects) {
 	
 	// Will display info text or fade out over time
 	if (state.infoText.opacity > 0) {
-		context.fillStyle = `rgba(0, 0, 0, ${state.infoText.opacity / 100})`;
+		
+		context.fillStyle = rgbString(state.colours.text, state.infoText.opacity / 100);
 		context.fillText(" Click to pause/resume", 10, 100);
 		context.fillText("\"A\" to create a sphere", 10, 130);
 		context.fillText("\"D\" to destroy a sphere", 10, 160);
 		context.fillText("\"W\" to show/hide info", 10, 190);
+		context.fillText("\"B\" to cycle background colour", 10, 220);
 		if (state.infoText.show === false) {
 			state.infoText.opacity -= 5;
 		}
@@ -109,6 +112,21 @@ window.addEventListener("keydown", e => {
 			if (state.infoText.show) {
 				state.infoText.opacity = 100;
 			}
+			break;
+		case 66: // "B"
+			// Reduces background colour by 15, after 0 it will loop back to 255
+			// Changes text colour from black to white at a given threshold.
+			state.colours.background -= 15;
+			if (state.colours.background < 70 && state.colours.text === 0) {
+				state.colours.text = 255;
+			}
+			else if (state.colours.background < 0) {
+				state.colours.background = 255;
+				state.colours.text = 0;
+			};
+			context.canvas.setAttribute("style",
+				"background: " + rgbString(state.colours.background)
+			);
 			break;
 	}
 });
@@ -170,4 +188,12 @@ function factory_Sphere(r, posRange, velRange, c) {
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 function randomBetween(min, max) {
 	return Math.random() * (max - min) + min;
+}
+
+function rgbString(colour, opacity) {
+	if (opacity) {
+		return `rgba(${colour}, ${colour}, ${colour}, ${opacity})`;
+	} else {
+		return `rgb(${colour}, ${colour}, ${colour})`;
+	}
 }
