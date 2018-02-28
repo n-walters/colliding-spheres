@@ -9,9 +9,6 @@ window.addEventListener("load", () => {
 	state.infoText = { show: true, opacity: 100 };
 	
 	context = init(canvas);
-	context.lineWidth = 3;
-	context.font = "20px calibri";
-	context.textBaseline = "top";
 	
 	animate(context, objects);
 });
@@ -37,8 +34,11 @@ function init(canvas) {
 			{ x: { min: -2, max: 2 }, y: { min: -2, max: 2 } }
 		));
 	}
-	
-	return canvas.getContext("2d");
+	const context = canvas.getContext("2d");
+	context.lineWidth = 3;
+	context.font = "20px calibri";
+	context.textBaseline = "top";
+	return context;
 }
 
 function animate(context, objects) {
