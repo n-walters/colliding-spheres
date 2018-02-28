@@ -38,7 +38,7 @@ function init(canvas) {
 	}
 	
 	const context = canvas.getContext("2d");
-	context.lineWidth = 3;
+	context.lineWidth = 2;
 	context.font = "20px calibri";
 	context.textBaseline = "top";
 	
