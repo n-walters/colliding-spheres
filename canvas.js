@@ -87,7 +87,7 @@ window.addEventListener("resize", () => {
 window.addEventListener("click", () => {
 	if (animation === undefined) {
 		console.log("Resuming animation.");
-		animate(context, objects, mouse);
+		animate(context, objects, mouse, states);
 	} else {
 		console.log("Pausing animation.");
 		window.cancelAnimationFrame(animation);
