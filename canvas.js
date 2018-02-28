@@ -28,7 +28,12 @@ function init(canvas) {
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
 	
-	for (let i = 0; i < 10; i++) {
+	// Calculates a reasonable number of spheres based on the estimate of
+	// 1 sphere per 7500 pixels. Rounded to the nearest 5.
+	const amount = 5 * Math.round((canvas.width * canvas.height) / 37500);
+	console.log(`Creating ${amount} spheres.`);
+	
+	for (let i = 0; i < amount; i++) {
 		objects.push(factory_Sphere(
 			20,
 			{ x: { min: 0, max: canvas.width }, y: { min: 0, max: canvas.height } },
