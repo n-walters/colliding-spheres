@@ -9,7 +9,7 @@ window.addEventListener("load", () => {
 	
 	const canvas = document.getElementById("canvas");
 	context = init(canvas);
-	animate(context, objects, states);
+	animate(context, objects, mouse, states);
 });
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -51,8 +51,8 @@ function init(canvas) {
 	return context;
 }
 
-function animate(context, objects, states) {
-	animation = window.requestAnimationFrame(() => animate(context, objects, states));
+function animate(context, objects, mouse, states) {
+	animation = window.requestAnimationFrame(() => animate(context, objects, mouse, states));
 	context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 	
 	// Will display info text or fade out over time
@@ -70,7 +70,7 @@ function animate(context, objects, states) {
 	}
 	
 	objects.forEach(object => {
-		object.update(context);
+		object.update(context, mouse);
 		object.draw(context);
 	});
 }
@@ -87,7 +87,7 @@ window.addEventListener("resize", () => {
 window.addEventListener("click", () => {
 	if (animation === undefined) {
 		console.log("Resuming animation.");
-		animate(context, objects);
+		animate(context, objects, mouse);
 	} else {
 		console.log("Pausing animation.");
 		window.cancelAnimationFrame(animation);
@@ -160,7 +160,7 @@ function Sphere(radius, position, velocity, colour) {
 		context.stroke();
 	}
 	
-	this.update = (context) => {
+	this.update = (context, mouse) => {
 		this.position.x += this.velocity.x;
 		this.position.y += this.velocity.y;
 		
@@ -172,6 +172,15 @@ function Sphere(radius, position, velocity, colour) {
 		if (this.position.y - this.radius <= 0 ||
 			this.position.y + this.radius >= context.canvas.height) {
 				this.velocity.y *= -1;
+		}
+		
+		// Mouse interaction
+		const distance = distanceBetween(
+			this.position.x, this.position.y, mouse.x, mouse.y);
+		if (distance < 200) {
+			this.opacity = Math.min(this.opacity + 0.02, 1);
+		} else {
+			this.opacity = Math.max(this.opacity - 0.02, 0.2);
 		}
 	}
 }
