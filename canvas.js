@@ -69,7 +69,8 @@ function init(canvas) {
 }
 
 function animate(context, objects, mouse, states) {
-	animation = window.requestAnimationFrame(() => animate(context, objects, mouse, states));
+	animation = window.requestAnimationFrame(() =>
+		animate(context, objects, mouse, states));
 	context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 	
 	// Info text will either be displayed or faded out.
@@ -173,8 +174,7 @@ window.addEventListener("keydown", e => {
 			states.colours.background -= 15;
 			if (states.colours.background < 70 && states.colours.text === 0) {
 				states.colours.text = 255;
-			}
-			else if (states.colours.background < 0) {
+			} else if (states.colours.background < 0) {
 				states.colours.background = 255;
 				states.colours.text = 0;
 			};
@@ -322,9 +322,10 @@ function SphereFactory(parameters, objects) {
 		// Compares the current sphere to all others and checks for overlaps in
 		// position. If there is an overlap, the factory function is re-called
 		// recursively until a unique position is found.
-		if (!objects.every(object =>
-			distanceBetween(p, object.position) >
-			parameters.radius + object.radius)) {
+		if (objects.every(
+			object => distanceBetween(p, object.position) >
+				parameters.radius + object.radius
+			) === false) {
 				return SphereFactory(parameters, objects);
 		}
 	}
