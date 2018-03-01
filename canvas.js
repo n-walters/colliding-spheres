@@ -45,7 +45,7 @@ function init(canvas) {
 	
 	// Generate Spheres and populate the 'objects' list.
 	for (let i = 0; i < amount; i++) {
-		objects.push(factory_Sphere({
+		objects.push(SphereFactory({
 			radius: 20,
 			position: {
 				x: { min: 0, max: canvas.width },
@@ -139,7 +139,7 @@ window.addEventListener("keydown", e => {
 	switch (e.keyCode) {
 		case 65: // "A"
 			// Generates and adds a new Sphere.
-			objects.push(factory_Sphere({
+			objects.push(SphereFactory({
 				radius: 20,
 				position: {
 					x: { min: 0, max: canvas.width },
@@ -305,7 +305,7 @@ function Sphere(radius, position, velocity, colour) {
 
 // factory function for creating Sphere objects.
 // Takes an object with 'radius', 'position', 'velocity', and 'colour' properties.
-function factory_Sphere(parameters, objects) {
+function SphereFactory(parameters, objects) {
 	
 	// Chooses a random value between min and max for both x and y, then rounds
 	// to an integer.
@@ -327,7 +327,7 @@ function factory_Sphere(parameters, objects) {
 		if (!objects.every(object =>
 			distanceBetween(p.x, p.y, object.position.x, object.position.y) >
 			parameters.radius + object.radius)) {
-				return factory_Sphere(parameters, objects);
+				return SphereFactory(parameters, objects);
 		}
 	}
 	
