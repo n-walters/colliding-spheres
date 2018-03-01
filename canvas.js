@@ -261,8 +261,7 @@ function Sphere(radius, position, velocity, colour) {
 		}
 		
 		// Mouse interaction
-		const distance =
-			distanceBetween(this.position.x, this.position.y, mouse.x, mouse.y);
+		const distance = distanceBetween(this.position, mouse);
 		if (distance < mouse.distance) {
 			// Velocity is increased in the direction opposite to the mouse's
 			// position with a magnitude proportional to the distance between
@@ -288,8 +287,7 @@ function Sphere(radius, position, velocity, colour) {
 			// If the distance is less than the radii, attempt to resolve
 			// the collision.
 			if (object !== this &&
-				distanceBetween(this.position.x, this.position.y,
-					object.position.x, object.position.y) <
+				distanceBetween(this.position, object.position) <
 					this.radius + object.radius) {
 						// Will return undefined in the case that the spheres
 						// only moved past one another rather than colliding.
@@ -325,7 +323,7 @@ function SphereFactory(parameters, objects) {
 		// position. If there is an overlap, the factory function is re-called
 		// recursively until a unique position is found.
 		if (!objects.every(object =>
-			distanceBetween(p.x, p.y, object.position.x, object.position.y) >
+			distanceBetween(p, object.position) >
 			parameters.radius + object.radius)) {
 				return SphereFactory(parameters, objects);
 		}
@@ -359,8 +357,8 @@ function rgbString(colour, opacity) {
 }
 
 // Calculates distance between two points using the Pythagorean equation.
-function distanceBetween(x1, y1, x2, y2) {
-	const delta = { x: x2 - x1, y: y2 - y1 };
+function distanceBetween(first, second) {
+	const delta = { x: second.x - first.x, y: second.y - first.y };
 	return Math.sqrt(Math.pow(delta.x, 2) + Math.pow(delta.y, 2));
 }
 
