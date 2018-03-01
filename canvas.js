@@ -60,8 +60,7 @@ function init(canvas) {
 				x: { min: -2, max: 2 },
 				y: { min: -2, max: 2 }
 			},
-			colour: colours[states.colours.set][Math.round(randomBetween(0,
-				colours[states.colours.set].length - 1))]
+			colour: chooseColour(colours, states.colours.set)
 		}, objects));
 	}
 	
@@ -157,8 +156,7 @@ window.addEventListener("keydown", e => {
 					x: { min: -2, max: 2 },
 					y: { min: -2, max: 2 }
 				},
-				colour: colours[states.colours.set][Math.round(randomBetween(0,
-					colours[states.colours.set].length - 1))]
+				colour: chooseColour(colours, states.colours.set)
 			}, objects));
 			break;
 		case 68: // "D"
@@ -180,9 +178,8 @@ window.addEventListener("keydown", e => {
 			if (++states.colours.set === colours.length) {
 				states.colours.set = 0;
 			}
-			objects.forEach(object => object.colour =
-				colours[states.colours.set][Math.round(randomBetween(0,
-				colours[states.colours.set].length - 1))]);
+			objects.forEach(object =>
+				object.colour = chooseColour(colours, states.colours.set));
 			break;
 		case 66: // "B"
 			// Reduces background colour by 15, after 0 it will loop back to 255
@@ -434,4 +431,10 @@ function resolveCollision(object1, object2) {
 		// Rotates velocities back to the original axes and returns.
 		return [rotateVelocity(v1, -angle), rotateVelocity(v2, -angle)];
 	}
+}
+
+// Chooses a random colour from the specified set
+function chooseColour(colours, set) {
+	return colours[set][Math.round(
+		randomBetween(0, colours[set].length - 1))];
 }
