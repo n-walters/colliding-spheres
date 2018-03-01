@@ -6,7 +6,7 @@ window.addEventListener("load", () => {
 	
 	// Variable to hold information about the state of various parts of the app.
 	states.infoText = { show: true, opacity: 100 };
-	states.colours = { background: 255, text: 0 };
+	states.colours = { background: 255, text: 0, set: 0 };
 	states.velocity = { multiplier: 1, opacity: 0 };
 	states.repulsion = { enabled: true, magnitude: 0.025, opacity: 0 };
 	
@@ -23,7 +23,9 @@ let animation;
 const mouse = {};
 const objects = [];
 const states = {};
-const colours = ["33,133,197", "126,206,253", "102,240,128"];
+const colours = [
+	["033,133,197", "126,206,253", "102,240,128"]
+];
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*          Implement                                                        */
@@ -55,7 +57,8 @@ function init(canvas) {
 				x: { min: -2, max: 2 },
 				y: { min: -2, max: 2 }
 			},
-			colour: colours[Math.round(randomBetween(0, colours.length - 1))]
+			colour: colours[states.colours.set][Math.round(randomBetween(0,
+				colours[states.colours.set].length - 1))]
 		}, objects));
 	}
 	
@@ -150,7 +153,8 @@ window.addEventListener("keydown", e => {
 					x: { min: -2, max: 2 },
 					y: { min: -2, max: 2 }
 				},
-				colour: colours[Math.round(randomBetween(0, colours.length - 1))]
+				colour: colours[states.colours.set][Math.round(randomBetween(0,
+					colours[states.colours.set].length - 1))]
 			}, objects));
 			break;
 		case 68: // "D"
@@ -167,6 +171,14 @@ window.addEventListener("keydown", e => {
 		case 82: // "R"
 			// Toggles the mouse repelling spheres.
 			states.repulsion.enabled = !states.repulsion.enabled;
+			break;
+		case 67: // "C"
+			if (++states.colours.set === colours.length) {
+				states.colours.set = 0;
+			}
+			objects.forEach(object => object.colour =
+				colours[states.colours.set][Math.round(randomBetween(0,
+				colours[states.colours.set].length - 1))]);
 			break;
 		case 66: // "B"
 			// Reduces background colour by 15, after 0 it will loop back to 255
