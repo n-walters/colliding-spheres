@@ -273,14 +273,16 @@ function Sphere(radius, position, velocity, colour) {
 		
 		// Canvas edge collision.
 		// Is moving out of either left/right. Horizontal velocity reversed.
-		if (this.position.x - this.radius <= 0 ||
-			this.position.x + this.radius >= context.canvas.width) {
-				this.velocity.x *= -1;
+		if (this.position.x - this.radius <= 0) {
+			this.velocity.x = Math.abs(this.velocity.x);
+		} else if (this.position.x + this.radius >= context.canvas.width) {
+			this.velocity.x = -Math.abs(this.velocity.x);
 		}
 		// Is moving out of either top/bottom. Vertical velocity reversed.
-		if (this.position.y - this.radius <= 0 ||
-			this.position.y + this.radius >= context.canvas.height) {
-				this.velocity.y *= -1;
+		if (this.position.y - this.radius <= 0) {
+			this.velocity.y = Math.abs(this.velocity.y);
+		} else if (this.position.y + this.radius >= context.canvas.height) {
+			this.velocity.y = -Math.abs(this.velocity.y);
 		}
 		
 		// Mouse interaction
