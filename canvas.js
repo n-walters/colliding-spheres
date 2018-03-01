@@ -165,7 +165,7 @@ window.addEventListener("keydown", e => {
 			break;
 		case 82: // "R"
 			// Toggles the mouse repelling spheres.
-			states.repulsion = !states.repulsion;
+			states.repulsion.enabled = !states.repulsion.enabled;
 			break;
 		case 66: // "B"
 			// Reduces background colour by 15, after 0 it will loop back to 255
