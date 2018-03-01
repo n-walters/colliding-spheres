@@ -56,7 +56,7 @@ function init(canvas) {
 				y: { min: -2, max: 2 }
 			},
 			colour: colours[Math.round(randomBetween(0, colours.length - 1))]
-		}));
+		}, objects));
 	}
 	
 	// Sets a few initial style settings.
@@ -150,7 +150,7 @@ window.addEventListener("keydown", e => {
 					y: { min: -2, max: 2 }
 				},
 				colour: colours[Math.round(randomBetween(0, colours.length - 1))]
-			}));
+			}, objects));
 			break;
 		case 68: // "D"
 			// Removes the first Sphere.
@@ -285,11 +285,11 @@ function Sphere(radius, position, velocity, colour) {
 
 // factory function for creating Sphere objects.
 // Takes an object with 'radius', 'position', 'velocity', and 'colour' properties.
-function factory_Sphere(parameters) {
+function factory_Sphere(parameters, objects) {
 	
 	// Chooses a random value between min and max for both x and y, then rounds
 	// to an integer.
-	const p = {
+	let p = {
 		x: Math.round(randomBetween(
 			parameters.position.x.min + parameters.radius,
 			parameters.position.x.max - parameters.radius)
@@ -299,6 +299,19 @@ function factory_Sphere(parameters) {
 			parameters.position.y.max - parameters.radius)
 		)
 	};
+	
+	if (objects.length > 1) {
+		// Compares the current sphere to all others and checks for overlaps in
+		// position. If there is an overlap, the factory function is re-called
+		// recursively until a unique position is found.
+		objects.forEach(object => {
+			if (distanceBetween(p.x, p.y, object.position.x, object.position.y)
+				< parameters.radius * 2) {
+				return factory_Sphere(parameters, objects);
+			}
+		});
+	}
+	
 	// Chooses a random value between min and max for both x and y, then rounds
 	// to 2 decimal places.
 	const v = {
