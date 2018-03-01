@@ -227,6 +227,7 @@ function Sphere(radius, position, velocity, colour) {
 	this.radius = radius;
 	this.position = position;
 	this.velocity = velocity;
+	this.mass = 1;
 	this.colour = colour;
 	this.opacity = 0.2;
 	
@@ -349,5 +350,52 @@ function rotateVelocity(velocity, angle) {
 	return {
 		x: velocity.x * Math.cos(angle) - velocity.y * Math.sin(angle),
 		y: velocity.x * Math.sin(angle) + velocity.y * Math.cos(angle)
+	}
+}
+
+// Calculates the resulting velocities after a collision
+function resolveCollision(object1, object2) {
+	
+	// Position (p) and velocity (v) differences of the spheres.
+	const deltas = {
+		p: {
+			x: object2.position.x - object1.position.x,
+			y: object2.position.y - object1.position.y
+		},
+		v: {
+			x: object1.velocity.x - object2.velocity.x,
+			y: object1.velocity.y - object2.velocity.y
+		}
+	};
+	
+	//
+	if (deltas.v.x * deltas.p.x + deltas.v.y * deltas.p.y >= 0) {
+		// Finds the angle of the plane of collision.
+		// Takes the negative as the origin of axes is top-left rather than
+		// bottom-left.
+		const angle = Math.atan(deltas.p.y / deltas.p.x) * -1;
+		
+		// Finds the velocity components in the direction of the collision.
+		const u1 = rotateVelocity(object1.velocity, angle);
+		const u2 = rotateVelocity(object2.velocity, angle);
+		
+		// Aliases for the object masses in order to the make the ensuing
+		// formula more readable.
+		const m1 = object1.mass;
+		const m2 = object2.mass;
+		
+		// One-dimensional Newtonian collision
+		// https://en.wikipedia.org/wiki/Elastic_collision#One-dimensional_Newtonian
+		const v1 = {
+			x: (u1.x * (m1 - m2) + 2 * m2 * u2.x) / (m1 + m2),
+			y: u1.y
+		};
+		const v2 = {
+			x: (u2.x * (m1 - m2) + 2 * m2 * u1.x) / (m1 + m2),
+			y: u2.y
+		};
+		
+		// Rotates velocities back to the original axes and returns.
+		return [rotateVelocity(v1, -angle), rotateVelocity(v2, -angle)];
 	}
 }
