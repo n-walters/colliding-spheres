@@ -109,7 +109,7 @@ function animate(context, objects, mouse, states) {
 	
 	// Updates and then draws each object.
 	objects.forEach(object => {
-		object.update(context, mouse, states);
+		object.update(context, mouse, objects, states);
 		object.draw(context);
 	});
 }
@@ -244,7 +244,7 @@ function Sphere(radius, position, velocity, colour) {
 	}
 	
 	// Updates Sphere properties.
-	this.update = (context, mouse, states) => {
+	this.update = (context, mouse, objects, states) => {
 		this.position.x += this.velocity.x * states.velocity.multiplier;
 		this.position.y += this.velocity.y * states.velocity.multiplier;
 		
@@ -281,6 +281,25 @@ function Sphere(radius, position, velocity, colour) {
 		} else {
 			this.opacity = Math.max(this.opacity - 0.02, 0.2);
 		}
+		
+		// Collisions with other spheres
+		objects.forEach(object => {
+			// Check the distance between this sphere and all others.
+			// If the distance is less than the radii, attempt to resolve
+			// the collision.
+			if (object !== this &&
+				distanceBetween(this.position.x, this.position.y,
+					object.position.x, object.position.y) <
+					this.radius + object.radius) {
+						// Will return undefined in the case that the spheres
+						// only moved past one another rather than colliding.
+						const result = resolveCollision(this, object);
+						if (result !== undefined) {
+							this.velocity = result[0];
+							object.velocity = result[1];
+						}
+			}
+		});
 	}
 }
 
