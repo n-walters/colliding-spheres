@@ -87,6 +87,7 @@ function animate(context, objects, mouse, states) {
 			"\"D\" to destroy a sphere",
 			"\"R\" to toggle mouse repulsion",
 			"\"W\" to show/hide info",
+			"\"C\" to cycle sphere colours",
 			"\"B\" to cycle background colour"
 		];
 		for (let i = 0; i < text.length; i++) {
