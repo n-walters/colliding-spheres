@@ -92,9 +92,17 @@ function animate(context, objects, mouse, states) {
 			"\"C\" to cycle sphere colours",
 			"\"B\" to cycle background colour"
 		];
+		let maxWidth = 0;
 		for (let i = 0; i < text.length; i++) {
+			maxWidth = Math.max(maxWidth, context.measureText(text[i]).width);
 			context.fillText(text[i], 10, i * 30 + 100);
 		}
+		// Draws a fancy border/background around the info text.
+		context.fillStyle = `rgb(${colours[states.colours.set][0]}, 0.05)`;
+		context.fillRect(0, 80, maxWidth + 20, text.length * 30 + 20);
+		context.strokeStyle = `rgb(${colours[states.colours.set][0]}, 0.1)`;
+		context.strokeRect(0, 80, maxWidth + 20, text.length * 30 + 20);
+		
 		if (states.infoText.show === false) {
 			states.infoText.opacity -= 5;
 		}
