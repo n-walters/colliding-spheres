@@ -319,9 +319,10 @@ function SphereFactory(parameters, objects) {
 	};
 	
 	if (objects.length > 1) {
-		// Compares the current sphere to all others and checks for overlaps in
-		// position. If there is an overlap, the factory function is re-called
-		// recursively until a unique position is found.
+		// Checks the distance between the current sphere and all other spheres.
+		// If the distance is less than the sum of the radii, the spheres overlap
+		// and the factory function is re-called recursively until a unique
+		// position is found.
 		if (objects.every(
 			object => distanceBetween(p, object.position) >
 				parameters.radius + object.radius
