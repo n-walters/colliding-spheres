@@ -45,12 +45,18 @@ function init(canvas) {
 	
 	// Generate Spheres and populate the 'objects' list.
 	for (let i = 0; i < amount; i++) {
-		objects.push(factory_Sphere(
-			20,
-			{ x: { min: 0, max: canvas.width }, y: { min: 0, max: canvas.height } },
-			{ x: { min: -2, max: 2 }, y: { min: -2, max: 2 } },
-			colours[Math.round(randomBetween(0, colours.length - 1))]
-		));
+		objects.push(factory_Sphere({
+			radius: 20,
+			position: {
+				x: { min: 0, max: canvas.width },
+				y: { min: 0, max: canvas.height }
+			},
+			velocity: {
+				x: { min: -2, max: 2 },
+				y: { min: -2, max: 2 }
+			},
+			colour: colours[Math.round(randomBetween(0, colours.length - 1))]
+		}));
 	}
 	
 	// Sets a few initial style settings.
@@ -133,14 +139,18 @@ window.addEventListener("keydown", e => {
 	switch (e.keyCode) {
 		case 65: // "A"
 			// Generates and adds a new Sphere.
-			objects.push(factory_Sphere(
-				20,
-				{ x: { min: 0, max: context.canvas.width },
-				  y: { min: 0, max: context.canvas.height }
+			objects.push(factory_Sphere({
+				radius: 20,
+				position: {
+					x: { min: 0, max: canvas.width },
+					y: { min: 0, max: canvas.height }
 				},
-				{ x: { min: -2, max: 2 }, y: { min: -2, max: 2 } },
-				colours[Math.round(randomBetween(0, colours.length - 1))]
-			));
+				velocity: {
+					x: { min: -2, max: 2 },
+					y: { min: -2, max: 2 }
+				},
+				colour: colours[Math.round(randomBetween(0, colours.length - 1))]
+			}));
 			break;
 		case 68: // "D"
 			// Removes the first Sphere.
@@ -273,20 +283,31 @@ function Sphere(radius, position, velocity, colour) {
 	}
 }
 
-function factory_Sphere(r, posRange, velRange, c) {
+// factory function for creating Sphere objects.
+// Takes an object with 'radius', 'position', 'velocity', and 'colour' properties.
+function factory_Sphere(parameters) {
+	
 	// Chooses a random value between min and max for both x and y, then rounds
 	// to an integer.
 	const p = {
-		x: Math.round(randomBetween(posRange.x.min + r, posRange.x.max - r)),
-		y: Math.round(randomBetween(posRange.y.min + r, posRange.y.max - r))
+		x: Math.round(randomBetween(
+			parameters.position.x.min + parameters.radius,
+			parameters.position.x.max - parameters.radius)
+		),
+		y: Math.round(randomBetween(
+			parameters.position.y.min + parameters.radius,
+			parameters.position.y.max - parameters.radius)
+		)
 	};
 	// Chooses a random value between min and max for both x and y, then rounds
 	// to 2 decimal places.
 	const v = {
-		x: Math.round(100 * randomBetween(velRange.x.min, velRange.x.max)) / 100,
-		y: Math.round(100 * randomBetween(velRange.y.min, velRange.y.max)) / 100
+		x: Math.round(randomBetween(
+			parameters.velocity.x.min, parameters.velocity.x.max) * 100) / 100,
+		y: Math.round(randomBetween(
+			parameters.velocity.y.min, parameters.velocity.y.max) * 100) / 100
 	};
-	return new Sphere(r, p, v, c);
+	return new Sphere(parameters.radius, p, v, parameters.colour);
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
