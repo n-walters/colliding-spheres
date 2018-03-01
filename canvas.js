@@ -1,4 +1,4 @@
-"use strict"
+"use strict";
 
 // Script is loaded in HTML HEAD, therefore before DOM elements.
 window.addEventListener("load", () => {
@@ -369,7 +369,7 @@ function rotateVelocity(velocity, angle) {
 	return {
 		x: velocity.x * Math.cos(angle) - velocity.y * Math.sin(angle),
 		y: velocity.x * Math.sin(angle) + velocity.y * Math.cos(angle)
-	}
+	};
 }
 
 // Calculates the resulting velocities after a collision
