@@ -99,9 +99,9 @@ function animate(context, objects, mouse, states) {
 		}
 		// Draws a fancy border/background around the info text.
 		context.fillStyle = `rgb(${colours[states.colours.set][0]}, 0.05)`;
-		context.fillRect(0, 80, maxWidth + 20, text.length * 30 + 20);
+		context.fillRect(0, 85, maxWidth + 25, text.length * 30 + 20);
 		context.strokeStyle = `rgb(${colours[states.colours.set][0]}, 0.1)`;
-		context.strokeRect(0, 80, maxWidth + 20, text.length * 30 + 20);
+		context.strokeRect(0, 85, maxWidth + 25, text.length * 30 + 20);
 		
 		if (states.infoText.show === false) {
 			states.infoText.opacity -= 5;
