@@ -23,7 +23,7 @@ let animation;
 const mouse = {};
 const objects = [];
 const states = {};
-const colours = ["33,133,197", "126,206,253", "255,127,102"];
+const colours = ["33,133,197", "126,206,253", "102,240,128"];
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*          Implement                                                        */
