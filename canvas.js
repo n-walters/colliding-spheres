@@ -175,6 +175,8 @@ window.addEventListener("keydown", e => {
 			states.repulsion.enabled = !states.repulsion.enabled;
 			break;
 		case 67: // "C"
+			// Increments the current colour set, but loops back to 0 if
+			// already at the last set.
 			if (++states.colours.set === colours.length) {
 				states.colours.set = 0;
 			}
