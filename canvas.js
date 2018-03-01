@@ -368,7 +368,8 @@ function resolveCollision(object1, object2) {
 		}
 	};
 	
-	//
+	// Only attempt to resolve the collision if the particles will actually
+	// collide rather than simply brush past with a gap of 0 pixels.
 	if (deltas.v.x * deltas.p.x + deltas.v.y * deltas.p.y >= 0) {
 		// Finds the angle of the plane of collision.
 		// Takes the negative as the origin of axes is top-left rather than
