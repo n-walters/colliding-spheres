@@ -343,3 +343,11 @@ function distanceBetween(x1, y1, x2, y2) {
 	const delta = { x: x2 - x1, y: y2 - y1 };
 	return Math.sqrt(Math.pow(delta.x, 2) + Math.pow(delta.y, 2));
 }
+
+// Calculates velocities when the reference axes are rotated by a specific angle.
+function rotateVelocity(velocity, angle) {
+	return {
+		x: velocity.x * Math.cos(angle) - velocity.y * Math.sin(angle),
+		y: velocity.x * Math.sin(angle) + velocity.y * Math.cos(angle)
+	}
+}
