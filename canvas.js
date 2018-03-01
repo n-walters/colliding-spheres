@@ -11,7 +11,7 @@ window.addEventListener("load", () => {
 	states.repulsion = { enabled: true, magnitude: 0.025, opacity: 0 };
 	
 	const canvas = document.getElementById("canvas");
-	context = init(canvas);
+	context = init(canvas, colours, states.colours.set);
 	animate(context, objects, mouse, states);
 });
 
@@ -33,7 +33,7 @@ const colours = [
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*          Implement                                                        */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-function init(canvas) {
+function init(canvas, colours, colourSet) {
 	// Adjusts canvas to fill entire window.
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
@@ -60,7 +60,7 @@ function init(canvas) {
 				x: { min: -2, max: 2 },
 				y: { min: -2, max: 2 }
 			},
-			colour: chooseColour(colours, states.colours.set)
+			colour: chooseColour(colours, colourSet)
 		}, objects));
 	}
 	
