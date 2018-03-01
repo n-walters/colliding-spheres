@@ -109,7 +109,7 @@ function animate(context, objects, mouse, states) {
 	
 	// Updates and then draws each object.
 	objects.forEach(object => {
-		object.update(context, mouse, objects, states);
+		object.update(context, objects, mouse, states);
 		object.draw(context);
 	});
 }
@@ -244,7 +244,7 @@ function Sphere(radius, position, velocity, colour) {
 	}
 	
 	// Updates Sphere properties.
-	this.update = (context, mouse, objects, states) => {
+	this.update = (context, objects, mouse, states) => {
 		this.position.x += this.velocity.x * states.velocity.multiplier;
 		this.position.y += this.velocity.y * states.velocity.multiplier;
 		
