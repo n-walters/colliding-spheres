@@ -304,12 +304,12 @@ function factory_Sphere(parameters, objects) {
 		// Compares the current sphere to all others and checks for overlaps in
 		// position. If there is an overlap, the factory function is re-called
 		// recursively until a unique position is found.
-		objects.forEach(object => {
-			if (distanceBetween(p.x, p.y, object.position.x, object.position.y)
+		for (let i = 0; i < objects.length; i++) {
+			if (distanceBetween(p.x, p.y, objects[i].position.x, objects[i].position.y)
 				< parameters.radius * 2) {
 				return factory_Sphere(parameters, objects);
 			}
-		});
+		}
 	}
 	
 	// Chooses a random value between min and max for both x and y, then rounds
