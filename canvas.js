@@ -9,6 +9,7 @@ window.addEventListener("load", () => {
 	states.colours = { background: 255, text: 0, set: 0 };
 	states.velocity = { multiplier: 1, opacity: 0 };
 	states.repulsion = { enabled: true, magnitude: 0.025, opacity: 0 };
+	states.animate = false;
 	
 	const canvas = document.getElementById("canvas");
 	context = init(canvas, colours, states.colours.set);
@@ -74,8 +75,10 @@ function init(canvas, colours, colourSet) {
 }
 
 function animate(context, objects, mouse, states) {
-	animation = window.requestAnimationFrame(() =>
-		animate(context, objects, mouse, states));
+	if (states.animate) {
+		animation = window.requestAnimationFrame(() =>
+			animate(context, objects, mouse, states));
+	}
 	context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 	
 	// Info text will either be displayed or faded out.
