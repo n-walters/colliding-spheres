@@ -135,7 +135,7 @@ function animate(context, objects, mouse, states) {
 window.addEventListener("resize", () => {
 	console.log("Window resized. Re-initialising.");
 	objects.length = 0;
-	context = init(context.canvas);
+	context = init(context.canvas, colours, states.colours.set);
 });
 
 window.addEventListener("click", () => {
